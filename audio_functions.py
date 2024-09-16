@@ -156,8 +156,8 @@ def get_audio_time_array(audio, fs):
         - time_array: array type object.
     """
     #error handling
-    if  type(audio) != np.ndarray:
-        raise ValueError("audio must be a ndarray")
+    #if  type(audio) != np.ndarray or type():
+    #    raise ValueError("audio must be a ndarray")
     if type(fs) != int:
         raise ValueError("fs must be int")
     
@@ -340,3 +340,22 @@ def get_ifft(in_rfft, in_phases=False, input="mag-phase"):
     
     temp_signal = np.fft.irfft(in_rfft)
     return temp_signal
+
+def save_audio(file_name, audio, fs=44100):
+    """
+    Save an audio signal to a file in WAV format.
+
+    Parameters:
+        - file_name (str): Name of the output WAV file.
+        - audio (ndarray): Audio signal to save.
+        - fs (int, optional): Sampling rate. Default is 48000.
+
+    Returns:
+        None
+    """
+    if type(file_name) != str:
+        raise Exception("file_name must be a string")
+
+    sf.write(f"audios/{file_name}", audio, fs)
+    print(f"Audio saved in audios/{file_name}")
+    return 

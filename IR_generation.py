@@ -17,10 +17,12 @@ def Simple_IR_Gen(t60, sound_rays_data, ts=50, DEVICE="cpu", fs=44100):
     """
 
     # Early Response
-    he = torch.zeros(t60*fs + 1, device=DEVICE)
-    time_scale = torch.linspace(len(he), step=1/fs)
+    he = torch.zeros(int(t60*fs) + 1, device=DEVICE)
+    dur, time_scale = auf.get_audio_time_array(he, fs=44100)
+    time_scale = torch.from_numpy(time_scale)
 
-    for t, A in sound_rays_data:
+    for i in sound_rays_data:
+        t, A = i
         index = torch.argmin(torch.abs(time_scale - t/1000))
         he[index] = A
 
@@ -35,7 +37,7 @@ def Simple_IR_Gen(t60, sound_rays_data, ts=50, DEVICE="cpu", fs=44100):
 
     IR = torch.cat(he[:ts], hl[ts:])
 
-    return IR
+    return IR, he, hl
 
 
 
